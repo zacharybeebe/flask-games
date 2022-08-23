@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<form id="battleship_player_form" method="POST">
+	{% if game['player1']['in'] %}
+		<input type="text" id="player1" name="player1" value="0" style="display: none; visibility: hidden;" />
+		<input type="text" id="player2" name="player2" value="1" style="display: none; visibility: hidden;" />
+	{% elif game['player2']['in'] %}
+		<input type="text" id="player1" name="player1" value="1" style="display: none; visibility: hidden;" />
+		<input type="text" id="player2" name="player2" value="0" style="display: none; visibility: hidden;" />
+	{% else %}
+		<input type="text" id="player1" name="player1" value="0" style="display: none; visibility: hidden;" />
+		<input type="text" id="player2" name="player2" value="0" style="display: none; visibility: hidden;" />
+	{% endif %}
+</form>
+
+{% if game['player1']['in'] %}
+	<button class="btn btn-lg btn-info" onclick="onPlayerSelect('player2')">select player 2</button>
+{% elif game['player2']['in'] %}
+	<button class="btn btn-lg btn-info" onclick="onPlayerSelect('player1')">select player 1</button>
+{% else %}
+	<button class="btn btn-lg btn-info" onclick="onPlayerSelect('player1')">select player 1</button>
+	<button class="btn btn-lg btn-info" onclick="onPlayerSelect('player2')">select player 2</button>
+{% endif %}
+
+{% endblock %}
+

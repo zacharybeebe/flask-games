@@ -1,0 +1,44 @@
+#game-board {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.letter-box {
+  border: 2px solid gray;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: 5.5rem;
+  font-weight: 700;
+  height: 6rem;
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.none {
+}
+
+.filled-box {
+  border: 2px solid black;
+}
+
+.letter-row {
+  display: flex;
+}
+
+.letter-row-input {
+    display: none;
+    visibility: hidden
+}

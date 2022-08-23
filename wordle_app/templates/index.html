@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<form id="wordle_form" method="POST">
+	<div id="game-board">
+		{% for row_n in range(guesses|length) %}
+		{% set guess = guesses[row_n] %}
+		<div class="row mb-3">
+			{% for col_n in range(guess|length) %}
+			{% set letter, color = guess[col_n] %}
+				{% if row_n != row %}
+				<div class="col">
+					<input type="text" disabled class="letter-box {{color}}" id="{{row_n}}|{{col_n}}" data-row="{{row_n}}" data-idx="{{col_n}}" value="{{letter}}" />
+				</div>
+				{% else %}
+				<div class="col">
+					{% if not correct %}
+						<input type="text" required class="letter-box {{color}}" id="{{row_n}}|{{col_n}}" name="{{row_n}}|{{col_n}}" data-row="{{row_n}}" data-idx="{{col_n}}" value="{{letter}}" oninput="onLetter(this, {{regex}})" />
+					{% else %}
+						<input type="text" disabled class="letter-box {{color}}" id="{{row_n}}|{{col_n}}" name="{{row_n}}|{{col_n}}" data-row="{{row_n}}" data-idx="{{col_n}}" value="{{letter}}" />
+					{% endif %}
+				</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+		{% endfor%}
+	</div>
+</form>
+
+
+{% if correct %}
+	<p class="lead mb-2 mt-2">YOU SOLVED IT!</p>
+	<button class="btn btn-lg btn-success" onclick="window.location = RESET_URL">Play Again</button>
+{% elif gameover %}
+	<p class="lead mb-2 mt-2">YOU COMPLETE LOSER!</p>
+	<p class="lead mb-2 mt-2">The word was: <strong>{{ word }}</strong></p>
+	<button class="btn btn-lg btn-danger" onclick="window.location = RESET_URL">Play Again</button>
+{% else %}
+	<button class="mt-2 btn btn-info btn-lg" onclick="onFormSubmit()">submit</button>
+	<br>
+	<button class="mt-2 btn btn-sm btn-danger" onclick="window.location = RESET_URL">reset</button>
+{% endif %}
+{% endblock %}
+

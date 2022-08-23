@@ -1,0 +1,55 @@
+.game-board {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.letter-box {
+  border: 2px solid LightGray;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: 3rem;
+  font-weight: 700;
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+
+.fill {
+    background-color: grey;
+}
+
+.is_hit {
+    background-color: red;
+}
+
+.is_miss {
+    background-color: white;
+}
+
+.has_miss {
+    background-color: white;
+}
+
+.has_hit {
+    background-color: red;
+}
+
+.none {
+
+}
+
+.show {
+    background-color: green;
+}
+
+.remain {
+    background-color: blue;
+}
+
+

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<input type="text" id="boat_counter" value="0" style="display: none; visibility: hidden">
+<button id="boats_ready" class="btn btn-lg btn-success" onclick="getId('battleship_form').submit();" style="visibility: hidden;">READY!</button>
+
+{% if pgame['ready'] %}
+	{% if pgame['turn'] %}
+		{% set cursor = 'cursor: all-scroll;' %}
+	{% else %}
+		{% set cursor = 'cursor: not-allowed;' %}
+	{% endif %}
+{% else %}
+	{% set cursor = 'cursor: auto;' %}
+{% endif %}
+
+{% set p_ready = pgame['ready'] | lower | safe %}
+{% set o_ready = othergame['ready'] | lower | safe %}
+{% set p_turn = pgame['turn'] | lower | safe %}
+
+<form id="battleship_form" method="POST">
+
+	<div class="container-fluid w-100 mt-0">
+		<!-- Reset button of game is over -->
+		{% if gameover %}
+			<button id="boats_reset" class="btn btn-lg btn-info align-center" onclick="window.location = RESET_URL">RESET</button>
+		{% endif %}
+
+		<!-- The different battleships to choose from -->
+		{% if not pgame['ready'] %}
+			<div class="row w-100 col-5 mb-5">
+				{% for boat in boats %}
+					<div class="col-md">
+						<p id="p_{{ boat }}">{{ boat | upper }}
+						<span id="r|{{ boat }}" data-feather="rotate-cw" onclick="onRotate(this)"></span></p>
+						<div id="{{ boat }}" data-orient="horizontal" class="row mb-1 justify-content-center" draggable="true" ondragstart="drag(event)">
+							{% for i in range(boats[boat]) %}
+								<div class="letter-box fill" id="{{ boat }}|{{ i }}"></div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<!-- The user's boat grid -->
+		<div class="row">
+			<div class="col">
+				{% if pgame['ready']%}
+					<div class="row w-100">
+					{% for boat_name in pgame['boats'] %}
+						{% if boat_name in pgame['sunk'] %}
+							<div class="col"><label class="lead" style="color: red; text-decoration: line-through;">{{ boat_name | upper }}</label></div>
+						{% else %}
+							<div class="col"><label class="lead">{{ boat_name | upper }}</label></div>
+						{% endif %}
+					{% endfor %}
+					</div>
+				{% endif %}
+				<div class="mt-2 game-board" id="game-board">
+					<table>
+						<tr>
+							<th class="numbers letter-box"></th>
+							{% for i in range(1, 11) %}
+								<td><div class="numbers letter-box">{{ i }}</div></td>
+							{% endfor %}
+						</tr>
+
+						{% for letter in pgame['board'] %}
+							<tr>
+								<th class="letters letter-box">{{ letter }}</th>
+								{% for number in pgame['board'][letter] %}
+									{% set id_ = pgame['board'][letter][number]['id'] %}
+									{% set fill = pgame['board'][letter][number]['fill'] %}
+									{% set is_hit = pgame['board'][letter][number]['is_hit'] %}
+									{% set is_miss = pgame['board'][letter][number]['is_miss'] %}
+									<td>
+										<div ondrop="drop(event)" data-div_id="{{ id_ }}" ondragover="allowDrop(event)" class="letter-box {{ fill }} {{ is_hit }} {{ is_miss }}"></div>
+										<input type="text" data-input_id="i?{{ id_ }}" name="i?{{ id_ }}" value="none" style="display: none; visibility: hidden;" />
+									</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+
+			<!-- The user's attack grid -->
+			{% if pgame['ready'] %}
+			<div class="col">
+				{% if pgame['ready']%}
+					<div class="row">
+					{% for boat_name in othergame['boats'] %}
+						{% if boat_name in othergame['sunk'] %}
+							<div class="col"><label class="lead" style="color: green; text-decoration: line-through;">{{ boat_name | upper }}</label></div>
+						{% else %}
+							<div class="col"><label class="lead">{{ boat_name | upper }}</label></div>
+						{% endif %}
+					{% endfor %}
+					</div>
+				{% endif %}
+				<div class="mt-2 game-board">
+					<table>
+						<tr>
+							<th class="numbers letter-box"></th>
+							{% for i in range(1, 11) %}
+								<td><div class="numbers letter-box">{{ i }}</div></td>
+							{% endfor %}
+						</tr>
+
+						{% for letter in pgame['attack'] %}
+							<tr>
+								<th class="letters letter-box">{{ letter }}</th>
+								{% for number in pgame['attack'][letter] %}
+									{% set id_ = pgame['attack'][letter][number]['id'] %}
+									{% set fill = pgame['attack'][letter][number]['fill'] %}
+									{% set has_hit = pgame['attack'][letter][number]['has_hit'] %}
+									{% set has_miss = pgame['attack'][letter][number]['has_miss'] %}
+									{% if id_ not in othergame['attacks'] %}
+									<td style="{{ cursor }}" onclick="onHitSelect(this, '{{ player }}', {{ p_ready }}, {{ p_turn }}, {{ o_ready }})">
+										<div data-div_id="{{ id_ }}" class="letter-box {{ fill }} {{ has_hit }} {{ has_miss }}"></div>
+									</td>
+									{% else %}
+									<td>
+										<div data-div_id="{{ id_ }}" class="letter-box {{ fill }} {{ has_hit }} {{ has_miss }}"></div>
+									</td>
+									{% endif %}
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</form>
+
+{% endblock %}
+
