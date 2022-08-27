@@ -1,5 +1,7 @@
 import random
 
+ALL_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+               'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 # Get random word from five-words list
 def get_word():
@@ -36,11 +38,9 @@ def get_new_game():
 
 # Creates regular expression for javascript handler to exclude used input characters
 def get_regex(missed_letters):
-    all_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     groups = []
     group = []
-    for ch in all_letters:
+    for ch in ALL_LETTERS:
         if ch not in missed_letters:
             group.append(ch)
         else:

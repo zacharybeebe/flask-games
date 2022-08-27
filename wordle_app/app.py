@@ -92,7 +92,7 @@ def index():
             send('reload!null?null?null?', broadcast=True, namespace='/')
 
     return render_template('index.html', word=game['word'], row=game['row'], guesses=game['guesses'], correct=game['correct'], gameover=game['gameover'],
-                           regex=get_regex(game['missed_letters']), loc=SOCKET_LOC)
+                           regex=get_regex(game['missed_letters']), missed_letters=game['missed_letters'], loc=SOCKET_LOC, all_letters=ALL_LETTERS)
 
 
 if __name__ == '__main__':
