@@ -29,16 +29,3 @@
 
 .none {
 }
-
-.filled-box {
-  border: 2px solid black;
-}
-
-.letter-row {
-  display: flex;
-}
-
-.letter-row-input {
-    display: none;
-    visibility: hidden
-}

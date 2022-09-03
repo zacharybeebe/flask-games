@@ -9,14 +9,14 @@ app.config['GAME'] = get_new_game()
 app_socket = SocketIO(app)
 
 # Use this bool to control your app debug state, run.py will import this
-DEBUG = True
+DEBUG = False
 if DEBUG:
     # debug server settings
     HOST = '127.0.0.1'
     PORT = 5000
 else:
     # local network settings
-    HOST = '146.76.96.39'
+    HOST = '10.0.0.176'
     PORT = 8080
 
 SOCKET_LOC = f'http://{HOST}:{PORT}'
